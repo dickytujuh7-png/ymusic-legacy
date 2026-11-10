@@ -1,0 +1,31 @@
+
+name: YMusic Legacy Android Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  inspect-project:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Inspect project ZIP
+        run: |
+          mkdir -p extracted
+          unzip -q YMusicLegacy_API18_ARMv7_Project.zip -d extracted
+          echo "=== PROJECT FILES ==="
+          find extracted -maxdepth 5 -type f | sort | head -200
+          echo "=== GRADLE FILES ==="
+          find extracted -type f \( -name "gradlew" -o -name "build.gradle" -o -name "settings.gradle" -o -name "AndroidManifest.xml" \)
