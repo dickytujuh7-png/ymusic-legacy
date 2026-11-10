@@ -1,5 +1,5 @@
 
-name: YMusic Legacy Android Build
+name: Build YMusic Legacy APK
 
 on:
   workflow_dispatch:
@@ -7,12 +7,15 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout project
         uses: actions/checkout@v4
 
       - name: Setup Java 17
@@ -21,32 +24,23 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK 35
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
       - name: Setup Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
 
-      - name: Check Android SDK
-        run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          ls "$ANDROID_HOME/platforms"
-          ls "$ANDROID_HOME/build-tools"
-
-      - name: Extract project
-        run: |
-          mkdir -p extracted
-          unzip -q YMusicLegacy_API18_ARMv7_Project.zip -d extracted
-
-      - name: Build Debug APK
-        run: |
-          gradle --no-daemon \
-            -p extracted/YMusicLegacy \
-            :app:assembleDebug
+      - name: Build APK
+        run: gradle --no-daemon assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: YMusicLegacy-API18-ARMv7
-          path: extracted/YMusicLegacy/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
-          retention-days: 14
+          name: YMusic-Legacy-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
