@@ -1,5 +1,4 @@
 
-
 name: Build Q10 Video Lite APK
 
 on:
@@ -30,7 +29,7 @@ jobs:
         with:
           packages: 'platform-tools'
 
-      - name: Install Android SDK Packages
+      - name: Install Android SDK
         run: |
           sdkmanager --install \
             "platforms;android-34" \
@@ -42,10 +41,7 @@ jobs:
             -name "Q10VideoLiteProject_v1_1.zip" \
             | head -n 1)
 
-          if [ -z "$ZIP" ]; then
-            echo "ZIP project tidak ditemukan!"
-            exit 1
-          fi
+          test -n "$ZIP" || exit 1
 
           mkdir -p extracted
           unzip -o "$ZIP" -d extracted
@@ -57,10 +53,7 @@ jobs:
             -o -name "settings.gradle.kts" \) \
             | head -n 1)
 
-          if [ -z "$PROJECT" ]; then
-            echo "Gradle project tidak ditemukan!"
-            exit 1
-          fi
+          test -n "$PROJECT" || exit 1
 
           echo "PROJECT_DIR=$(dirname "$PROJECT")" \
             >> $GITHUB_ENV
@@ -68,7 +61,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.7'
+          gradle-version: '8.9'
 
       - name: Build APK
         run: |
@@ -87,3 +80,4 @@ jobs:
           name: Q10VideoLite-APK
           path: '**/build/outputs/apk/debug/*.apk'
           if-no-files-found: error
+
