@@ -1,9 +1,8 @@
-name: Build YMusic Legacy APK
+name: Build Q10 Video Lite APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -11,48 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v3
         with:
           packages: 'platform-tools'
 
-      - name: Extract project ZIP
+      - name: Extract project
         run: |
-          mkdir -p extracted
-          ZIP=$(find . -maxdepth 1 -iname '*.zip' | head -n 1)
-          if [ -z "$ZIP" ]; then
-            echo "File ZIP tidak ditemukan"
-            exit 1
-          fi
-          unzip -q "$ZIP" -d extracted
+          unzip -q Q10VideoLiteProject.zip -d project
 
       - name: Build APK
         run: |
-          ROOT=$(dirname "$(find extracted -name settings.gradle -o -name settings.gradle.kts | head -n 1)")
-          if [ -z "$ROOT" ] || [ "$ROOT" = "." ]; then
-            ROOT=$(dirname "$(find extracted -name build.gradle | head -n 1)")
-          fi
-          echo "Project folder: $ROOT"
-          cd "$ROOT"
+          cd project
           gradle --no-daemon assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: YMusic-Legacy-APK
-          path: '**/build/outputs/apk/debug/*.apk'
+          name: Q10-Video-Lite-APK
+          path: project/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
