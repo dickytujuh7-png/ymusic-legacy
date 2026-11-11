@@ -1,5 +1,5 @@
 
-name: Build YMusic Legacy APK
+name: Build Q10 Video Lite APK
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Project
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -24,56 +24,57 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept SDK Licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install SDK Packages
+        run: |
+          sdkmanager --install \
+            "platform-tools" \
+            "platforms;android-34" \
+            "build-tools;34.0.0"
+
+      - name: Extract Project ZIP
+        run: |
+          ZIP=$(find . -name "Q10VideoLiteProject_v1_1.zip" | head -n 1)
+
+          if [ -z "$ZIP" ]; then
+            echo "ZIP project tidak ditemukan!"
+            exit 1
+          fi
+
+          mkdir -p extracted
+          unzip -o "$ZIP" -d extracted
+
+      - name: Find Android Project
+        run: |
+          PROJECT=$(find extracted -type f \
+            \( -name "settings.gradle" -o -name "settings.gradle.kts" \) \
+            | head -n 1)
+
+          if [ -z "$PROJECT" ]; then
+            echo "settings.gradle tidak ditemukan!"
+            exit 1
+          fi
+
+          echo "PROJECT_DIR=$(dirname "$PROJECT")" >> $GITHUB_ENV
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK Packages
-        run: |
-          sdkmanager "platform-tools"
-          sdkmanager "platforms;android-34"
-          sdkmanager "platforms;android-28"
-          sdkmanager "build-tools;34.0.0"
-
-      - name: Extract Project ZIP
-        run: |
-          if [ -f "YMusicLegacy_API18_ARMv7_Project.zip" ]; then
-            unzip -o YMusicLegacy_API18_ARMv7_Project.zip -d extracted
-          fi
-
-      - name: Locate Android Project
-        run: |
-          PROJECT=$(find . -type f \
-            \( -name "settings.gradle" -o -name "settings.gradle.kts" -o -name "build.gradle" \) \
-            ! -path "./.gradle/*" | head -n 1)
-
-          if [ -z "$PROJECT" ]; then
-            echo "Project Gradle tidak ditemukan!"
-            exit 1
-          fi
-
-          DIR=$(dirname "$PROJECT")
-          echo "PROJECT_DIR=$DIR" >> $GITHUB_ENV
-          echo "Project ditemukan di: $DIR"
-
       - name: Build APK
         run: |
           cd "$PROJECT_DIR"
-
-          if [ -f "./gradlew" ]; then
-            chmod +x ./gradlew
-            ./gradlew assembleDebug
-          else
-            gradle assembleDebug
-          fi
+          gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: YMusic-Legacy-APK
-          path: '**/build/outputs/apk/**/*.apk'
+          name: Q10VideoLite-APK
+          path: '**/build/outputs/apk/debug/*.apk'
           if-no-files-found: error
