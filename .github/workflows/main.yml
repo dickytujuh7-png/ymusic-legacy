@@ -1,38 +1,79 @@
-name: Build Q10 Video Lite APK
+
+name: Build YMusic Legacy APK
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          packages: 'platform-tools'
+          gradle-version: '8.7'
 
-      - name: Extract project
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK Packages
         run: |
-          unzip -q Q10VideoLiteProject.zip -d project
+          sdkmanager "platform-tools"
+          sdkmanager "platforms;android-34"
+          sdkmanager "platforms;android-28"
+          sdkmanager "build-tools;34.0.0"
+
+      - name: Extract Project ZIP
+        run: |
+          if [ -f "YMusicLegacy_API18_ARMv7_Project.zip" ]; then
+            unzip -o YMusicLegacy_API18_ARMv7_Project.zip -d extracted
+          fi
+
+      - name: Locate Android Project
+        run: |
+          PROJECT=$(find . -type f \
+            \( -name "settings.gradle" -o -name "settings.gradle.kts" -o -name "build.gradle" \) \
+            ! -path "./.gradle/*" | head -n 1)
+
+          if [ -z "$PROJECT" ]; then
+            echo "Project Gradle tidak ditemukan!"
+            exit 1
+          fi
+
+          DIR=$(dirname "$PROJECT")
+          echo "PROJECT_DIR=$DIR" >> $GITHUB_ENV
+          echo "Project ditemukan di: $DIR"
 
       - name: Build APK
         run: |
-          cd project
-          gradle --no-daemon assembleDebug
+          cd "$PROJECT_DIR"
+
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            ./gradlew assembleDebug
+          else
+            gradle assembleDebug
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Q10-Video-Lite-APK
-          path: project/app/build/outputs/apk/debug/*.apk
+          name: YMusic-Legacy-APK
+          path: '**/build/outputs/apk/**/*.apk'
           if-no-files-found: error
