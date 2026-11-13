@@ -18,5 +18,8 @@ android {
 }
 
 dependencies {
-    implementation 'org.mozilla.geckoview:geckoview:68.11.0'
+    implementation('org.mozilla.geckoview:geckoview:73.0.20200217142647') {
+        exclude module: 'snakeyaml'
+    }
+    implementation 'org.yaml:snakeyaml:1.26:android'
 }
