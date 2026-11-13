@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - q10-youtube-music
+      - main
     paths:
       - "q10-youtube-music/**"
       - ".github/workflows/q10-youtube-music.yml"
