@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
     }
 
     @Override public void onBackPressed() {
-        if (session != null && session.canGoBack()) {
+        if (session != null && canGoBack) {
             session.goBack();
             return;
         }
