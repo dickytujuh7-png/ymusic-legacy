@@ -9,7 +9,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 18
         versionCode 1
-        versionName "0.1-gecko68-test"
+        versionName "1.0-q10-gecko68"
     }
 
     compileOptions {
