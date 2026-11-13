@@ -1,8 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="id.q10.youtubemusic">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <application android:allowBackup="false" android:label="Q10 YouTube Music" android:theme="@android:style/Theme.Holo.NoActionBar" android:usesCleartextTraffic="false">
-        <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:exported="true" android:screenOrientation="portrait">
+    <application
+        android:allowBackup="false"
+        android:label="YMusic Q10"
+        android:theme="@android:style/Theme.Holo.NoActionBar"
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="false">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
