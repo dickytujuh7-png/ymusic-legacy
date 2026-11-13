@@ -1,4 +1,4 @@
-name: Build Q10 YouTube Music APK
+name: Build YMusic Q10 APK
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 35
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -45,26 +45,26 @@ jobs:
           APK="q10-youtube-music/app/build/outputs/apk/debug/app-debug.apk"
           test -s "$APK"
           mkdir -p release
-          cp "$APK" release/Q10-YouTube-Music-1.0.apk
-          file release/Q10-YouTube-Music-1.0.apk
+          cp "$APK" release/YMusic-Q10-1.1.apk
+          file release/YMusic-Q10-1.1.apk
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Q10-YouTube-Music-APK
-          path: release/Q10-YouTube-Music-1.0.apk
+          name: YMusic-Q10-APK
+          path: release/YMusic-Q10-1.1.apk
           if-no-files-found: error
           retention-days: 30
       - name: Publish prerelease APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: q10-youtube-music-v1
-          name: Q10 YouTube Music v1
+          tag_name: ymusic-q10-v1.1
+          name: YMusic Q10 v1.1
           prerelease: true
           overwrite_files: true
           body: |
-            First test build for BlackBerry Q10 / Android Runtime 4.3 / ARMv7.
-            This app searches YouTube's mobile website and plays selections through YouTube's own player.
-            Background playback is not guaranteed.
-          files: release/Q10-YouTube-Music-1.0.apk
+            Early test build for BlackBerry Q10 / Android Runtime 4.3 / ARMv7.
+            Native Java UI with Android WebView and YouTube mobile browsing.
+            Playback and background behavior depend on YouTube and the legacy device runtime.
+          files: release/YMusic-Q10-1.1.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
