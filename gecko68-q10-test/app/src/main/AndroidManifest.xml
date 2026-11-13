@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="id.q10.gecko68test">
@@ -5,7 +6,8 @@
     <uses-sdk tools:overrideLibrary="org.mozilla.geckoview" />
     <application
         android:allowBackup="false"
-        android:label="Gecko 68 Q10 Test"
+        android:label="YouTube Q10"
+        android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
         android:hardwareAccelerated="true">
         <activity
