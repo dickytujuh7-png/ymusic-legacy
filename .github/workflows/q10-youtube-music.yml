@@ -1,0 +1,63 @@
+name: Build Q10 YouTube Music APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "q10-youtube-music/**"
+      - ".github/workflows/q10-youtube-music.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Set up Java 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "11"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install Android SDK packages
+        run: sdkmanager --install "platforms;android-30" "build-tools;30.0.3"
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: "6.7.1"
+      - name: Build ARMv7 APK
+        run: |
+          gradle -p q10-youtube-music assembleDebug --no-daemon
+          APK="q10-youtube-music/app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$APK"
+          mkdir -p release
+          cp "$APK" release/Q10-YouTube-Music-1.0.apk
+          file release/Q10-YouTube-Music-1.0.apk
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Q10-YouTube-Music-APK
+          path: release/Q10-YouTube-Music-1.0.apk
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publish prerelease APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: q10-youtube-music-v1
+          name: Q10 YouTube Music v1
+          prerelease: true
+          overwrite_files: true
+          body: |
+            First test build for BlackBerry Q10 / Android Runtime 4.3 / ARMv7.
+            This app searches YouTube's mobile website and plays selections through YouTube's own player.
+            Background playback is not guaranteed.
+          files: release/Q10-YouTube-Music-1.0.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,22 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        applicationId 'id.q10.youtubemusic'
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode 1
+        versionName '1.0'
+        ndk { abiFilters 'armeabi-v7a' }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes { debug { minifyEnabled false } }
+}
+
+dependencies {
+    implementation 'org.mozilla.geckoview:geckoview:68.11.0'
+}
