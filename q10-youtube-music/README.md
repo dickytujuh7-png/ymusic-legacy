@@ -6,7 +6,7 @@ Lightweight Android app shell for BlackBerry Q10 (Android Runtime 4.3 / API 18, 
 - 720 x 720 square display
 - minSdk 18, targetSdk 28
 - ARMv7 (armeabi-v7a)
-- GeckoView 68.11.0, the final Firefox 68-era line compatible with Android 4.1–4.4
+- GeckoView 73.0.20200217142647 with the Android-compatible SnakeYAML variant for API 18
 - YouTube mobile website for search and playback
 
 Search for a song or artist, choose a result on YouTube, and use YouTube's own player controls.
