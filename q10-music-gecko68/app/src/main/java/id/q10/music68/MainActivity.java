@@ -26,6 +26,8 @@ public class MainActivity extends Activity {
     private GeckoSession session;
     private EditText searchBox;
     private TextView status;
+    private boolean canGoBack = false;
+    private boolean canGoForward = false;
 
     private int dp(float v) {
         return (int)(v * getResources().getDisplayMetrics().density + 0.5f);
@@ -127,6 +129,14 @@ public class MainActivity extends Activity {
         try {
             if (runtime == null) runtime = GeckoRuntime.create(this);
             session = new GeckoSession();
+            session.setNavigationDelegate(new GeckoSession.NavigationDelegate() {
+                @Override public void onCanGoBack(GeckoSession s, boolean value) {
+                    canGoBack = value;
+                }
+                @Override public void onCanGoForward(GeckoSession s, boolean value) {
+                    canGoForward = value;
+                }
+            });
             session.setProgressDelegate(new GeckoSession.ProgressDelegate() {
                 @Override public void onPageStart(GeckoSession s, String url) {
                     runOnUiThread(() -> status.setText("Memuat musik..."));
@@ -137,8 +147,8 @@ public class MainActivity extends Activity {
             });
             session.open(runtime);
             view.setSession(session);
-            back.setOnClickListener(v -> { if (session != null && session.canGoBack()) session.goBack(); });
-            forward.setOnClickListener(v -> { if (session != null && session.canGoForward()) session.goForward(); });
+            back.setOnClickListener(v -> { if (session != null && canGoBack) session.goBack(); });
+            forward.setOnClickListener(v -> { if (session != null && canGoForward) session.goForward(); });
             reload.setOnClickListener(v -> { if (session != null) session.reload(); });
             openHome();
         } catch (Throwable e) {
