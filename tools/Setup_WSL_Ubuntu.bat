@@ -43,15 +43,24 @@ exit /b
 :ENABLE
 echo Mengaktifkan Windows Subsystem for Linux...
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-if %errorlevel% neq 0 goto FAILED
+set "RC=%errorlevel%"
+if "%RC%"=="0" goto ENABLE_VMP
+if "%RC%"=="3010" goto ENABLE_VMP
+goto FAILED
 
+:ENABLE_VMP
 echo.
 echo Mengaktifkan Virtual Machine Platform...
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-if %errorlevel% neq 0 goto FAILED
+set "RC=%errorlevel%"
+if "%RC%"=="0" goto FEATURES_DONE
+if "%RC%"=="3010" goto FEATURES_DONE
+goto FAILED
 
-echo Selesai mengaktifkan komponen Windows.
-echo Setelah komputer menyala kembali, klik dua kali file ini lagi.
+:FEATURES_DONE
+echo.
+echo Kedua komponen WSL berhasil diaktifkan.
+echo Windows perlu di-restart sebelum pemasangan Ubuntu.
 echo. > "%STAGE%"
 echo.
 choice /C YN /M "Restart komputer sekarang"
@@ -71,6 +80,6 @@ exit /b
 :FAILED
 echo.
 echo Ada komponen yang gagal diaktifkan.
-echo Catat pesan error di atas lalu kirimkan fotonya.
+echo Catat seluruh pesan error di atas lalu kirimkan fotonya.
 pause
 exit /b
