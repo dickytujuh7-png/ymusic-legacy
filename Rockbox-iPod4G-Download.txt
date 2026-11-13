@@ -1,0 +1,5 @@
+Rockbox official build download — iPod 4G (Monochrome)
+
+https://build.rockbox.org/data/ipod4g/rockbox.zip
+
+Note: This is the official iPod 4G build URL. The archive could not be verified during upload, so check that it contains .rockbox/rocks/viewers/rockboy.rock before installing or copying files.
