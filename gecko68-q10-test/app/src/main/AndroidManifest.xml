@@ -8,7 +8,7 @@
         android:allowBackup="false"
         android:label="YouTube Q10"
         android:icon="@drawable/ic_launcher"
-        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:theme="@android:style/Theme.Holo.NoActionBar"
         android:hardwareAccelerated="true">
         <activity
             android:name=".MainActivity"
