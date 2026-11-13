@@ -1,0 +1,87 @@
+name: Build Rockboy for iPod Classic 4G Monochrome
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/rockboy-ipod4g.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-rockboy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout YMusic repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            autoconf automake bison build-essential bzip2 flex g++ gcc \
+            gettext git gawk gzip libgmp-dev libisl-dev libmpc-dev \
+            libmpfr-dev libtool-bin make patch perl pkg-config texinfo xz-utils
+
+      - name: Get official Rockbox source
+        run: |
+          git clone --depth 1 https://github.com/Rockbox/rockbox.git rockbox-src
+
+      - name: Build Rockbox ARM cross-compiler
+        run: |
+          rockbox-src/tools/rockboxdev.sh \
+            --target=a \
+            --prefix="$HOME/rockboxdev" \
+            --dlwhere="$HOME/rockbox-downloads" \
+            --builddir="$HOME/rockbox-toolchain-build" \
+            --makeflags="-j2"
+          echo "$HOME/rockboxdev/bin" >> "$GITHUB_PATH"
+
+      - name: Configure iPod 4G and select Rockboy only
+        run: |
+          mkdir build-ipod4g
+          cd build-ipod4g
+          ../rockbox-src/tools/configure \
+            --target=ipod4g \
+            --type=n \
+            --plugins=rockboy
+
+      - name: Compile Rockboy plugin
+        run: |
+          make -C build-ipod4g -j2
+          test -s build-ipod4g/apps/plugins/rockboy/rockboy.rock
+          mkdir -p package/.rockbox/rocks/viewers
+          cp build-ipod4g/apps/plugins/rockboy/rockboy.rock \
+            package/.rockbox/rocks/viewers/rockboy.rock
+          cd package
+          zip -r ../rockboy-ipod4g.zip .rockbox
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rockboy-ipod4g
+          path: rockboy-ipod4g.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: rockboy-ipod4g
+          name: Rockboy for iPod Classic 4G Monochrome
+          prerelease: true
+          overwrite_files: true
+          body: |
+            Rockboy plugin compiled from the official Rockbox source for target ipod4g (target ID 17).
+
+            Install by extracting the archive into the iPod root. It contains:
+            .rockbox/rocks/viewers/rockboy.rock
+
+            This is a plugin-only package; it does not replace the installed Rockbox firmware.
+            Source: https://github.com/Rockbox/rockbox
+          files: rockboy-ipod4g.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
