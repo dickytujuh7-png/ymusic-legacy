@@ -14,9 +14,9 @@
         </shape>
     </item>
     <item android:gravity="center">
-        <shape android:shape="right">
-            <size android:width="34dp" android:height="42dp"/>
-            <solid android:color="#FFFFFF"/>
+        <shape android:shape="rectangle">
+            <size android:width="18dp" android:height="30dp"/>
+            <corners android:radius="3dp"/><solid android:color="#FFFFFF"/>
         </shape>
     </item>
     <item android:gravity="top|right" android:right="24dp" android:top="18dp">
