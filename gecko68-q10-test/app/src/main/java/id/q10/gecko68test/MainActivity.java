@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -50,15 +51,16 @@ public class MainActivity extends Activity {
         b.setTextSize(13);
         b.setAllCaps(false);
         b.setTextColor(Color.WHITE);
-        b.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.rgb(42, 52, 66)));
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(Color.rgb(42, 52, 66));
+        bg.setCornerRadius(dp(5));
+        b.setBackgroundDrawable(bg);
         return b;
     }
 
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
-        getWindow().setStatusBarColor(Color.rgb(18, 25, 35));
-        getWindow().setNavigationBarColor(Color.BLACK);
         getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         LinearLayout root = new LinearLayout(this);
@@ -93,7 +95,10 @@ public class MainActivity extends Activity {
         searchBox.setHintTextColor(Color.rgb(165, 175, 190));
         searchBox.setTextColor(Color.WHITE);
         searchBox.setPadding(dp(10), 0, dp(8), 0);
-        searchBox.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.rgb(110, 130, 150)));
+        GradientDrawable searchBg = new GradientDrawable();
+        searchBg.setColor(Color.rgb(35, 46, 60));
+        searchBg.setCornerRadius(dp(5));
+        searchBox.setBackgroundDrawable(searchBg);
         searchBox.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchRow.addView(searchBox, new LinearLayout.LayoutParams(0, dp(44), 1));
 
