@@ -1,0 +1,20 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    ndkVersion '17.2.4988734'
+    defaultConfig {
+        applicationId "id.q10.music68"
+        minSdkVersion 18
+        targetSdkVersion 18
+        versionCode 1
+        versionName "1.0-q10-music-gecko68"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+dependencies {
+    implementation 'org.mozilla.geckoview:geckoview-beta-armeabi-v7a:68.0.20190611143747'
+}

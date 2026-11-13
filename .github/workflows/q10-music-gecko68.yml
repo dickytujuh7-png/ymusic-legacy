@@ -1,0 +1,50 @@
+name: Build Q10 Music GeckoView 68 APK
+
+on:
+  push:
+    branches:
+      - q10-music-gecko68
+    paths:
+      - 'q10-music-gecko68/**'
+      - '.github/workflows/q10-music-gecko68.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17 for Android SDK tools
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+      - name: Install Android 28 platform and build tools
+        run: sdkmanager "platforms;android-28" "build-tools;28.0.3" "ndk;17.2.4988734"
+      - name: Set up JDK 8 for legacy Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '5.6.4'
+      - name: Build debug APK
+        working-directory: q10-music-gecko68
+        run: gradle --no-daemon assembleDebug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: q10-music-gecko68-apk
+          path: q10-music-gecko68/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
