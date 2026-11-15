@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Andromax Lite Menu</string>
+    <string name="title">Andromax Lite OS</string>
+    <string name="empty_apps">Tidak ada aplikasi yang dapat dibuka</string>
+    <string name="key_help">▲▼◀▶ Pilih   OK Buka   MENU Segarkan</string>
+</resources>
