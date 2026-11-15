@@ -14,7 +14,10 @@ Last updated: 2026-11-15
 - [x] Physical keypad layout mappings inspected.
 - [x] Camera HAL and its principal native dependencies inventoried.
 - [x] Low-memory settings and compressed ROM-package size estimates documented.
-- [x] GitHub Actions checks retained for profile validation and Python syntax.
+- [x] First native Android 4.4 HOME launcher prototype added: three-column app grid, D-pad/center/Enter navigation, numeric shortcuts, MENU refresh, and BACK handling.
+- [x] Launcher uses platform widgets only; no AppCompat/AndroidX or network permission.
+- [x] Static launcher checks added for Android XML, HOME intent, API level, grid size, and keypad mappings.
+- [x] GitHub Actions updated to run device-profile, launcher-source, and Python syntax checks.
 
 ## Verified firmware findings
 
@@ -32,7 +35,8 @@ Last updated: 2026-11-15
 - [ ] Resolve platform strings `sp9820a_3c10` vs `sp9820a_1c10` and the previously reported F17ALH recovery label.
 - [ ] Obtain exact partition capacities; fstab provides partition names/mounts only.
 - [ ] Establish the vendor secure-boot wrapper/signing and supported update-package process.
-- [ ] Confirm the existing HOME app and develop the 3-column keypad-first launcher.
+- [ ] Compile the launcher APK with the legacy Android SDK toolchain and review compiler/lint output.
+- [ ] Compare the existing stock HOME app and test HOME selection, focus movement, and application launch on target hardware.
 - [ ] Build Andromax Web integration and measure its memory use on-device.
 - [ ] Diagnose the camera freeze with real logcat/dmesg data and repeatable device tests.
 - [ ] Build the modified system image and a release package below 200 MB.
@@ -44,7 +48,7 @@ The archive can now be analyzed offline, but static firmware inspection cannot r
 
 Boot/recovery images contain a vendor preheader, and the recovery fstab refers to VLR secure boot. A generic boot repacker is not a safe release method. The precise vendor signing/installation process is not yet known.
 
-The user's development PC is Windows 10 with 4 GB RAM and less than 50 GB free disk space. The analysis so far has been done in a temporary workspace, not by taking control of that PC. There has been no device connection, no image modification, no build, and no flash test.
+The user's development PC is Windows 10 with 4 GB RAM and less than 50 GB free disk space. The analysis so far has been done in a temporary workspace, not by taking control of that PC. There has been no device connection, no system-image modification, no APK compilation yet, and no flash test. The launcher source is a prototype, not a tested APK.
 
 ## ROM-size interpretation
 
