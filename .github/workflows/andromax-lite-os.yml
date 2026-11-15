@@ -64,7 +64,7 @@ jobs:
         run: gradle --no-daemon --stacktrace assembleDebug
       - name: Verify APK archive and checksum
         run: |
-          APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk"
+          APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/debug/app-debug.apk"
           test -s "$APK"
           unzip -t "$APK"
           file "$APK"
@@ -74,6 +74,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: andromax-lite-launcher-debug
-          path: Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk
+          path: Andromax-Lite-OS/launcher/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
