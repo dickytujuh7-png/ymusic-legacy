@@ -62,7 +62,6 @@ public final class MainActivity extends Activity {
 
         appGrid = new GridView(this);
         appGrid.setNumColumns(3);
-        appGrid.setColumnWidth(GridView.AUTO_FIT);
         appGrid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         appGrid.setHorizontalSpacing(dp(4));
         appGrid.setVerticalSpacing(dp(4));
@@ -253,6 +252,13 @@ public final class MainActivity extends Activity {
             tile.setFocusableInTouchMode(false);
             Drawable icon = loadIcon(entry.resolveInfo);
             if (icon != null) {
+                // Give each cell its own drawable instance to avoid shared callback/bounds state.
+                Drawable.ConstantState constantState = icon.getConstantState();
+                if (constantState != null) {
+                    icon = constantState.newDrawable(getResources()).mutate();
+                } else {
+                    icon = icon.mutate();
+                }
                 int iconSize = dp(31);
                 icon.setBounds(0, 0, iconSize, iconSize);
             }
