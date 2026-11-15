@@ -48,7 +48,7 @@ jobs:
       - name: Install legacy Android SDK packages
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platforms;android-25" "build-tools;25.0.2"
+          sdkmanager "platforms;android-26" "build-tools;26.0.2"
       - name: Set up Java 8 for legacy Android Gradle Plugin
         uses: actions/setup-java@v4
         with:
@@ -56,9 +56,9 @@ jobs:
           java-version: "8"
       - name: Install Gradle 3.3
         run: |
-          curl --fail --location --retry 3 https://services.gradle.org/distributions/gradle-3.3-bin.zip -o "$RUNNER_TEMP/gradle-3.3-bin.zip"
+          curl --fail --location --retry 3 https://services.gradle.org/distributions/gradle-4.1-bin.zip -o "$RUNNER_TEMP/gradle-4.1-bin.zip"
           unzip -q "$RUNNER_TEMP/gradle-3.3-bin.zip" -d "$RUNNER_TEMP"
-          echo "$RUNNER_TEMP/gradle-3.3/bin" >> "$GITHUB_PATH"
+          echo "$RUNNER_TEMP/gradle-4.1/bin" >> "$GITHUB_PATH"
       - name: Build launcher APK
         working-directory: Andromax-Lite-OS/launcher
         run: gradle --no-daemon --stacktrace assembleDebug
@@ -66,7 +66,7 @@ jobs:
         run: |
           APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk"
           test -s "$APK"
-          "$ANDROID_HOME/build-tools/25.0.2/aapt" dump badging "$APK" | grep -F "package: name='org.andromaxlite.launcher'"
+          "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | grep -F "package: name='org.andromaxlite.launcher'"
           "$ANDROID_HOME/build-tools/25.0.2/aapt" dump badging "$APK" | grep -F "sdkVersion:'19'"
           stat --printf='APK bytes: %s\n' "$APK"
       - name: Upload development APK
