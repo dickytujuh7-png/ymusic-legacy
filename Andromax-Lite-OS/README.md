@@ -14,9 +14,15 @@ Project workspace for a lightweight, physical-keypad-first Android system for Sm
 
 ## Current status
 
-**This repository is still a firmware-analysis and source-workspace project, not a flashable ROM.** The supplied firmware has now been inspected read-only. A first Android 4.4 HOME launcher source prototype has been added under `launcher/`, but it has not yet been compiled into an APK or tested on the handset. No system image has been modified and no release ZIP exists.
+**This repository is still a firmware-analysis and source-workspace project, not a flashable ROM.** The supplied firmware has now been inspected read-only. A first Android 4.4 HOME launcher prototype now compiles into a 12,706-byte debug APK in GitHub Actions. It has not been installed or tested on the handset. No system image has been modified and no release ROM ZIP exists.
 
-See [launcher/README.md](launcher/README.md) for the launcher source, [docs/FIRMWARE-ANALYSIS-2026-11-15.md](docs/FIRMWARE-ANALYSIS-2026-11-15.md) for the inspection report, and [docs/DEVELOPMENT-STATUS.md](docs/DEVELOPMENT-STATUS.md) for the release gates.
+See [launcher/README.md](launcher/README.md) for the launcher source and build notes, [docs/FIRMWARE-ANALYSIS-2026-11-15.md](docs/FIRMWARE-ANALYSIS-2026-11-15.md) for the inspection report, and [docs/DEVELOPMENT-STATUS.md](docs/DEVELOPMENT-STATUS.md) for the release gates.
+
+## First launcher build
+
+- Build: successful in GitHub Actions (Android Gradle Plugin 3.0.1, Gradle 4.1, JDK 8, Android API 26 build tools).
+- APK: 12,706 bytes; SHA-256 `40d5ee182e1ee6efbd1aae44045f9ac85f8c34c2905ba0cbaff7c84828e34032`.
+- This is a development/debug APK only. It is not a full ROM, has not been installed on-device, and must not be treated as a validated system launcher.
 
 ## Firmware facts established
 
