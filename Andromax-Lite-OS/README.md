@@ -14,9 +14,9 @@ Project workspace for a lightweight, physical-keypad-first Android system for Sm
 
 ## Current status
 
-**This repository is still a firmware-analysis and source-workspace project, not a flashable ROM.** The supplied firmware has now been inspected read-only. No Android Lite OS launcher has been compiled, no system image has been modified, no release ZIP exists, and no build has been tested on the handset.
+**This repository is still a firmware-analysis and source-workspace project, not a flashable ROM.** The supplied firmware has now been inspected read-only. A first Android 4.4 HOME launcher source prototype has been added under `launcher/`, but it has not yet been compiled into an APK or tested on the handset. No system image has been modified and no release ZIP exists.
 
-See [docs/FIRMWARE-ANALYSIS-2026-11-15.md](docs/FIRMWARE-ANALYSIS-2026-11-15.md) for the inspection report and [docs/DEVELOPMENT-STATUS.md](docs/DEVELOPMENT-STATUS.md) for the release gates.
+See [launcher/README.md](launcher/README.md) for the launcher source, [docs/FIRMWARE-ANALYSIS-2026-11-15.md](docs/FIRMWARE-ANALYSIS-2026-11-15.md) for the inspection report, and [docs/DEVELOPMENT-STATUS.md](docs/DEVELOPMENT-STATUS.md) for the release gates.
 
 ## Firmware facts established
 
@@ -38,7 +38,7 @@ The original firmware archive is 203,210,513 bytes. A selected set of existing c
 1. Preserve untouched stock images and record their checksums.
 2. Resolve exact device identity and partition capacities before creating a release image.
 3. Preserve vendor boot/security and radio components unless their format and installation path are fully understood.
-4. Build and test the launcher separately before changing framework or init services.
+4. Compile and test the launcher separately before changing framework or init services.
 5. Keep keypad navigation as a required test for each screen.
 6. Preserve the stock camera HAL and dependencies until device logs identify a specific fault.
 7. Measure package size and RAM use rather than assuming improvements.
