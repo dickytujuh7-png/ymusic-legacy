@@ -1,0 +1,35 @@
+{
+  "project": "Andromax Lite OS",
+  "vendor": "Smartfren",
+  "marketing_name": "Andromax Prime",
+  "firmware_archive_name": "Firmware+Andromax+Prime+F17A1H.zip",
+  "reported_identifiers": {
+    "firmware_filename": "F17A1H",
+    "recovery_display": "F17ALH",
+    "status": "conflict_requires_verification"
+  },
+  "targets": {
+    "ram_mb": 512,
+    "system_image_goal_mb": 200,
+    "launcher_grid_columns": 3,
+    "physical_keypad_required": true,
+    "touchscreen_dependency_allowed": false,
+    "browser_name": "Andromax Web",
+    "browser_baseline": "Chromium 68",
+    "camera_stability_required": true
+  },
+  "platform": {
+    "android_version": null,
+    "soc": null,
+    "board": null,
+    "kernel_version": null,
+    "boot_image_format": "unverified_spreadtrum_vendor_wrapper_reported",
+    "system_filesystem": "ext4_reported_unverified",
+    "partition_map": null
+  },
+  "release": {
+    "flashable": false,
+    "device_tested": false,
+    "rom_size_goal_achieved": false
+  }
+}
