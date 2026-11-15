@@ -146,9 +146,16 @@ The system contains dedicated keypad layouts:
 - `/usr/keylayout/sprd-eic-keys.kl`
 - `/usr/keylayout/sprd-gpio-keys.kl`
 
-The SCI keypad layout maps the number keys 0–9, DPAD up/down/left/right/center, MENU, BACK, CALL, HOME, CAMERA, STAR, POUND, POWER, and volume keys. The build also has `qemu.hw.mainkeys=1` and `ro.product.barphone=true`.
+The SCI keypad layout maps Linux key codes for number keys 0–9, DPAD up/down/left/right/center, MENU, BACK, CALL, HOME, CAMERA, STAR, POUND, POWER, and volume keys. In particular:
+- D-pad: up 103, down 108, right 106, left 105.
+- Center: key code 28 in `sci-keypad.kl`; the alternate extended layout uses 353.
+- MENU: 139; BACK: 158; CALL: 231; HOME: 102.
+- Number row maps keys 2–11 to 1–0.
+The build also has `qemu.hw.mainkeys=1` and `ro.product.barphone=true`.
 
-This is strong evidence that the stock system was configured for physical-key operation. The new launcher must preserve those Android key events and provide focus/selection behavior for every screen. It does not prove that every third-party app is keypad-friendly.
+The stock `/priv-app/SimpleHome.apk` is the original home app. A read-only DEX string inspection found launcher classes such as `LauncherGridView`, `IconLauncher`, `LauncherFragment`, and `KeyCodeEventUtil`, plus `onKeyDown`, `onKeyUp`, `onKeyLongPress`, and `isLauncherNeedUseKeycode`. This shows that the vendor home app includes explicit keypad-handling code, not just touch-driven UI.
+
+This is strong evidence that the stock system was configured for physical-key operation. The new launcher must preserve the Android key events and focus/selection behavior. Keep SimpleHome intact until the replacement launcher is selected and tested. This does not prove that every third-party app is keypad-friendly.
 
 ## Low-memory and performance settings
 
