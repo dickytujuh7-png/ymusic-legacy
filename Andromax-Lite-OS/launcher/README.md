@@ -20,7 +20,7 @@ This project uses the Android Gradle Plugin 3.0.1 and Gradle 4.1 for compatibili
 gradle assembleDebug
 ```
 
-The generated APK is a development prototype only. It has not been compiled in this workspace or tested on an Andromax Prime handset. Do not install it as the system launcher until target-device validation is complete.
+The APK was compiled successfully in GitHub Actions and its ZIP structure was checked. It is a development/debug prototype only; it has not been installed or tested on an Andromax Prime handset. Do not select it as the permanent system launcher until target-device validation and a stock-HOME rollback path are complete.
 
 ## Navigation
 
@@ -32,3 +32,5 @@ The generated APK is a development prototype only. It has not been compiled in t
 - BACK: stays on the launcher screen.
 
 The prototype deliberately does not modify Android framework, input configuration, boot/recovery images, camera HAL, or radio partitions.
+
+The first CI build produced a 12,706-byte APK with SHA-256 `40d5ee182e1ee6efbd1aae44045f9ac85f8c34c2905ba0cbaff7c84828e34032`. It remains untested on physical hardware.
