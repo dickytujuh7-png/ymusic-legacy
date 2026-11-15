@@ -11,6 +11,7 @@ Project workspace for a lightweight, physical-keypad-first Android system for Sm
 - Input: all system navigation and included apps should be usable with the physical keypad, without touchscreen dependency.
 - Browser: Andromax Web, based on the user's tested Chromium 68 baseline, with memory use reduced where feasible.
 - Camera: investigate and fix intermittent hangs before considering the build stable.
+- Flashlight/torch: mandatory feature; preserve the vendor flash path and provide keypad-only control after its API-19 mechanism is verified.
 
 ## Current status
 
