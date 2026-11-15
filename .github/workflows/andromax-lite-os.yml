@@ -54,7 +54,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "8"
-      - name: Install Gradle 3.3
+      - name: Install Gradle 4.1
         run: |
           curl --fail --location --retry 3 https://services.gradle.org/distributions/gradle-4.1-bin.zip -o "$RUNNER_TEMP/gradle-4.1-bin.zip"
           unzip -q "$RUNNER_TEMP/gradle-3.3-bin.zip" -d "$RUNNER_TEMP"
