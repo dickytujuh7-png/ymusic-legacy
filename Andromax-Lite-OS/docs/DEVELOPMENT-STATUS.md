@@ -20,6 +20,8 @@ Last updated: 2026-11-15
 - [x] GitHub Actions updated to run device-profile, launcher-source, and Python syntax checks.
 - [x] Launcher APK compiled successfully in GitHub Actions using JDK 8, Android Gradle Plugin 3.0.1, Gradle 4.1, compile SDK 26, and min SDK 19.
 - [x] APK ZIP integrity checked and debug artifact uploaded; APK size 12,706 bytes, SHA-256 `40d5ee182e1ee6efbd1aae44045f9ac85f8c34c2905ba0cbaff7c84828e34032`.
+- [x] Launcher refreshes the app list on resume and attempts to preserve the selected app across refreshes (source change committed; awaiting CI rebuild).
+- [x] API-19 torch investigation and hardware acceptance plan documented; no unverified torch control code added.
 
 ## Verified firmware findings
 
@@ -39,6 +41,7 @@ Last updated: 2026-11-15
 - [ ] Establish the vendor secure-boot wrapper/signing and supported update-package process.
 - [ ] Install and test the debug APK on the exact handset: HOME selection, focus movement, key mapping, and launching every relevant app.
 - [ ] Compare the stock SimpleHome behavior and confirm a safe way to switch back to stock HOME.
+- [ ] Identify and implement the verified API-19 vendor torch control path; test keypad-only ON/OFF and camera coexistence.
 - [ ] Build Andromax Web integration and measure its memory use on-device.
 - [ ] Diagnose the camera freeze with real logcat/dmesg data and repeatable device tests.
 - [ ] Build the modified system image and a release package below 200 MB.
@@ -50,7 +53,7 @@ The archive can now be analyzed offline, but static firmware inspection cannot r
 
 Boot/recovery images contain a vendor preheader, and the recovery fstab refers to VLR secure boot. A generic boot repacker is not a safe release method. The precise vendor signing/installation process is not yet known.
 
-The user's development PC is Windows 10 with 4 GB RAM and less than 50 GB free disk space. The analysis so far has been done in a temporary workspace, not by taking control of that PC. There has been no device connection, no system-image modification, and no flash test. The debug launcher APK compiles in CI, but it has not been installed or tested on a physical Andromax Prime.
+The user's development PC is Windows 10 with 4 GB RAM and less than 50 GB free disk space. The analysis so far has been done in a temporary workspace, not by taking control of that PC. There has been no device connection, no system-image modification, and no flash test. The debug launcher APK previously compiled in CI, but the latest source change still needs a CI rebuild. It has not been installed or tested on a physical Andromax Prime.
 
 ## ROM-size interpretation
 
@@ -70,4 +73,4 @@ A release candidate must not be called flashable until all of the following are 
 - memory measurements;
 - calls, SMS, mobile data, Wi-Fi, and Bluetooth tests.
 
-A 12,706-byte debug launcher APK exists as a development artifact; it is not a ROM or flashable recovery package. No release ROM exists. Do not flash unverified images.
+A 12,706-byte debug launcher APK exists as a development artifact; it is not a ROM or flashable recovery package. No release ROM exists. The torch plan is documentation only, not an implementation. Do not flash unverified images.
