@@ -5,12 +5,15 @@
   "firmware_archive_name": "Firmware+Andromax+Prime+F17A1H.zip",
   "reported_identifiers": {
     "firmware_filename": "F17A1H",
+    "system_ro_product_model": "Andromax F17A1H",
+    "system_ro_product_name": "Andromax F17A1H",
     "recovery_display": "F17ALH",
-    "status": "conflict_requires_verification"
+    "status": "firmware_model_confirmed_recovery_identifier_unresolved"
   },
   "targets": {
     "ram_mb": 512,
-    "system_image_goal_mb": 200,
+    "rom_package_goal_mb": 200,
+    "rom_package_goal_interpretation": "compressed_release_package_not_expanded_system_partition",
     "launcher_grid_columns": 3,
     "physical_keypad_required": true,
     "touchscreen_dependency_allowed": false,
@@ -19,13 +22,30 @@
     "camera_stability_required": true
   },
   "platform": {
-    "android_version": null,
-    "soc": null,
-    "board": null,
-    "kernel_version": null,
-    "boot_image_format": "unverified_spreadtrum_vendor_wrapper_reported",
-    "system_filesystem": "ext4_reported_unverified",
-    "partition_map": null
+    "android_version": "4.4.4",
+    "android_api": 19,
+    "cpu_abi": "armeabi-v7a",
+    "soc": "Spreadtrum SP9820A family reported; firmware platform strings need reconciliation",
+    "board": "Haier; ro.board.platform=sc8830; hardware property SP9820A-openphone_V1.1.0",
+    "build_target_system": "sp9820a_3c10",
+    "build_target_ramdisk": "sp9820a_1c10",
+    "kernel_version": "3.10.65-svn183239",
+    "kernel_architecture": "ARM32",
+    "boot_image_format": "1024-byte SPRD-SECUREFLAG preheader followed by Android boot image header; recovery fstab uses secureboot=vlr:/uboot",
+    "system_filesystem": "ext4 sparse image; 600 MiB expanded; approximately 316.47 MiB allocated blocks",
+    "partition_map": "partial names from boot/recovery fstab only; partition capacities unavailable",
+    "keypad_layouts": [
+      "sci-keypad.kl",
+      "sci-keypad-ext.kl",
+      "sprd-eic-keys.kl",
+      "sprd-gpio-keys.kl"
+    ],
+    "camera_hal": "lib/hw/camera.sc8830.so; 32-bit ARM; preserve vendor dependencies",
+    "low_memory_properties": [
+      "ro.config.low_ram=true",
+      "ro.config.zram.support=true",
+      "ro.config.ksm.support=true"
+    ]
   },
   "release": {
     "flashable": false,
