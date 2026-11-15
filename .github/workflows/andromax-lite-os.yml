@@ -1,0 +1,21 @@
+name: Andromax Lite OS checks
+
+on:
+  push:
+    paths:
+      - "Andromax-Lite-OS/**"
+      - ".github/workflows/andromax-lite-os.yml"
+  pull_request:
+    paths:
+      - "Andromax-Lite-OS/**"
+      - ".github/workflows/andromax-lite-os.yml"
+  workflow_dispatch:
+
+jobs:
+  validate-project-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Validate device profile
+        run: python3 Andromax-Lite-OS/tools/validate_profile.py
