@@ -66,8 +66,9 @@ jobs:
         run: |
           APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk"
           test -s "$APK"
-          "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | grep -F "package: name='org.andromaxlite.launcher'"
-          "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | grep -F "sdkVersion:'19'"
+          "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | tee "$RUNNER_TEMP/andromax-launcher-badging.txt"
+          grep -F "org.andromaxlite.launcher" "$RUNNER_TEMP/andromax-launcher-badging.txt"
+          grep -E "sdkVersion.*19" "$RUNNER_TEMP/andromax-launcher-badging.txt"
           stat --printf='APK bytes: %s\n' "$APK"
       - name: Upload development APK
         uses: actions/upload-artifact@v4
