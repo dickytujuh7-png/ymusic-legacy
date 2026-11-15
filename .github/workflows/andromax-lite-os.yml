@@ -11,6 +11,9 @@ on:
       - ".github/workflows/andromax-lite-os.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   validate-project:
     runs-on: ubuntu-latest
@@ -27,3 +30,47 @@ jobs:
         run: python Andromax-Lite-OS/tools/check_launcher_source.py
       - name: Compile Python tooling
         run: python -m py_compile Andromax-Lite-OS/tools/*.py
+
+  build-launcher:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Java 17 for Android SDK manager
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install legacy Android SDK packages
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platforms;android-25" "build-tools;25.0.2"
+      - name: Set up Java 8 for legacy Android Gradle Plugin
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+      - name: Install Gradle 3.3
+        run: |
+          curl --fail --location --retry 3 https://services.gradle.org/distributions/gradle-3.3-bin.zip -o "$RUNNER_TEMP/gradle-3.3-bin.zip"
+          unzip -q "$RUNNER_TEMP/gradle-3.3-bin.zip" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-3.3/bin" >> "$GITHUB_PATH"
+      - name: Build launcher APK
+        working-directory: Andromax-Lite-OS/launcher
+        run: gradle --no-daemon --stacktrace assembleDebug
+      - name: Verify APK package metadata
+        run: |
+          APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk"
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/25.0.2/aapt" dump badging "$APK" | grep -F "package: name='org.andromaxlite.launcher'"
+          "$ANDROID_HOME/build-tools/25.0.2/aapt" dump badging "$APK" | grep -F "sdkVersion:'19'"
+          stat --printf='APK bytes: %s\n' "$APK"
+      - name: Upload development APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: andromax-lite-launcher-debug
+          path: Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
