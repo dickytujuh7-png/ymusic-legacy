@@ -14,7 +14,7 @@ This is the first native Android launcher source for Andromax Lite OS.
 
 ## Build
 
-This project uses the legacy Android Gradle Plugin 2.3.3 and Gradle 3.3 for compatibility with the Android 4.4-era SDK target. Build with JDK 8 and Android SDK platform 25 / build tools 25.0.2:
+This project uses the Android Gradle Plugin 3.0.1 and Gradle 4.1 for compatibility with the Android 4.4-era SDK target. Build with JDK 8 and Android SDK platform 26 / build tools 26.0.2:
 
 ```sh
 gradle assembleDebug
