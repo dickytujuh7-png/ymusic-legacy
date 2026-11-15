@@ -42,7 +42,16 @@ public final class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         buildLayout();
-        reloadApplications();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh after returning from Settings or another app so installed/disabled
+        // launch targets do not leave stale entries in the HOME grid.
+        if (adapter != null) {
+            reloadApplications();
+        }
     }
 
     private void buildLayout() {
@@ -99,6 +108,13 @@ public final class MainActivity extends Activity {
     }
 
     private void reloadApplications() {
+        String selectedKey = null;
+        int selectedPosition = appGrid == null ? -1 : appGrid.getSelectedItemPosition();
+        if (selectedPosition >= 0 && selectedPosition < entries.size()) {
+            AppEntry selected = entries.get(selectedPosition);
+            selectedKey = selected.resolveInfo.activityInfo.packageName + "/"
+                    + selected.resolveInfo.activityInfo.name;
+        }
         entries.clear();
         PackageManager pm = getPackageManager();
         Intent query = new Intent(Intent.ACTION_MAIN, null);
@@ -127,7 +143,19 @@ public final class MainActivity extends Activity {
         });
         adapter.notifyDataSetChanged();
         if (!entries.isEmpty()) {
-            appGrid.setSelection(0);
+            int restorePosition = 0;
+            if (selectedKey != null) {
+                for (int i = 0; i < entries.size(); i++) {
+                    AppEntry candidate = entries.get(i);
+                    String candidateKey = candidate.resolveInfo.activityInfo.packageName + "/"
+                            + candidate.resolveInfo.activityInfo.name;
+                    if (selectedKey.equals(candidateKey)) {
+                        restorePosition = i;
+                        break;
+                    }
+                }
+            }
+            appGrid.setSelection(restorePosition);
         }
     }
 
