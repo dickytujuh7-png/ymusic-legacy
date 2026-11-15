@@ -29,7 +29,9 @@ jobs:
       - name: Check Android launcher XML and keypad source
         run: python Andromax-Lite-OS/tools/check_launcher_source.py
       - name: Compile Python tooling
-        run: python -m py_compile Andromax-Lite-OS/tools/*.py
+        run: python -m py_compile Andromax-Lite-OS/tools/*.py Andromax-Lite-OS/tests/*.py
+      - name: Test ROM size estimator
+        run: python -m unittest discover -s Andromax-Lite-OS/tests -v
 
   build-launcher:
     runs-on: ubuntu-22.04
