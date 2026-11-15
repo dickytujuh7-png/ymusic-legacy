@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -67,7 +68,7 @@ public final class MainActivity extends Activity {
         appGrid.setVerticalSpacing(dp(4));
         appGrid.setPadding(dp(2), dp(3), dp(2), dp(3));
         appGrid.setClipToPadding(false);
-        appGrid.setSelector(android.R.color.transparent);
+        appGrid.setSelector(new ColorDrawable(0x00000000));
         appGrid.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
         appGrid.setVerticalScrollBarEnabled(false);
         appGrid.setFocusable(true);
@@ -198,14 +199,6 @@ public final class MainActivity extends Activity {
         // Keep the HOME surface available; BACK should not close the launcher.
         if (appGrid != null && appGrid.getSelectedItemPosition() >= 0) {
             appGrid.requestFocus();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (adapter != null) {
-            reloadApplications();
         }
     }
 
