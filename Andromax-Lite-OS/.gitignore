@@ -1,0 +1,21 @@
+# Build outputs
+out/
+build/
+dist/
+*.img
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
+# Local device dumps and proprietary blobs
+vendor/
+firmware-local/
+secrets/
+*.key
+*.pem
+
+# Host tooling
+.venv/
+__pycache__/
+*.pyc
