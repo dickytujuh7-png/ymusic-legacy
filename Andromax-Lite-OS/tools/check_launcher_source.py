@@ -62,7 +62,7 @@ def main() -> int:
     require("setOnItemClickListener" in java, "launcher selection handler missing")
 
     gradle = APP_GRADLE.read_text(encoding="utf-8")
-    require("com.android.tools.build:gradle:2.3.3" in
+    require("com.android.tools.build:gradle:3.0.1" in
             (LAUNCHER / "build.gradle").read_text(encoding="utf-8"),
             "legacy Android Gradle plugin declaration missing")
     require("minSdkVersion 19" in gradle, "Gradle minimum SDK must be API 19")
