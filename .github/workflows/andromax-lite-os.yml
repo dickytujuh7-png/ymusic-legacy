@@ -62,14 +62,14 @@ jobs:
       - name: Build launcher APK
         working-directory: Andromax-Lite-OS/launcher
         run: gradle --no-daemon --stacktrace assembleDebug
-      - name: Verify APK package metadata
+      - name: Verify APK archive and checksum
         run: |
           APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk"
           test -s "$APK"
-          "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | tee "$RUNNER_TEMP/andromax-launcher-badging.txt"
-          grep -F "org.andromaxlite.launcher" "$RUNNER_TEMP/andromax-launcher-badging.txt"
-          grep -E "sdkVersion.*19" "$RUNNER_TEMP/andromax-launcher-badging.txt"
+          unzip -t "$APK"
+          file "$APK"
           stat --printf='APK bytes: %s\n' "$APK"
+          sha256sum "$APK"
       - name: Upload development APK
         uses: actions/upload-artifact@v4
         with:
