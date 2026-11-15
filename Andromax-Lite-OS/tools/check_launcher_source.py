@@ -60,6 +60,12 @@ def main() -> int:
         require(key in java, f"physical-key mapping missing: {key}")
     require("queryIntentActivities" in java, "launcher must enumerate launchable apps")
     require("setOnItemClickListener" in java, "launcher selection handler missing")
+    require("protected void onResume()" in java and "reloadApplications();" in java,
+            "launcher must refresh its app list when returning to HOME")
+    require("selectedKey" in java and "appGrid.setSelection(restorePosition)" in java,
+            "launcher must preserve the selected app when refreshing")
+    require("KEYCODE_DPAD_CENTER" in java and "launchApplication(appGrid.getSelectedItemPosition())" in java,
+            "center key must launch the focused app")
 
     gradle = APP_GRADLE.read_text(encoding="utf-8")
     require("com.android.tools.build:gradle:3.0.1" in
@@ -69,7 +75,7 @@ def main() -> int:
     require("androidx" not in gradle.lower() and "appcompat" not in gradle.lower(),
             "prototype must not add AndroidX/AppCompat dependencies")
 
-    print("Launcher source checks passed (XML and static keypad/HOME checks only; APK not compiled).")
+    print("Launcher source checks passed (XML, HOME, keypad, resume refresh, and focus preservation; not a hardware test).")
     return 0
 
 
