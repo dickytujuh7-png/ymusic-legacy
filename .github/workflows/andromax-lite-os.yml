@@ -23,5 +23,7 @@ jobs:
           python-version: "3.x"
       - name: Validate device profile
         run: python Andromax-Lite-OS/tools/validate_profile.py
+      - name: Check Android launcher XML and keypad source
+        run: python Andromax-Lite-OS/tools/check_launcher_source.py
       - name: Compile Python tooling
         run: python -m py_compile Andromax-Lite-OS/tools/*.py
