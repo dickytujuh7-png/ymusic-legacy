@@ -57,7 +57,7 @@ jobs:
       - name: Install Gradle 4.1
         run: |
           curl --fail --location --retry 3 https://services.gradle.org/distributions/gradle-4.1-bin.zip -o "$RUNNER_TEMP/gradle-4.1-bin.zip"
-          unzip -q "$RUNNER_TEMP/gradle-3.3-bin.zip" -d "$RUNNER_TEMP"
+          unzip -q "$RUNNER_TEMP/gradle-4.1-bin.zip" -d "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/gradle-4.1/bin" >> "$GITHUB_PATH"
       - name: Build launcher APK
         working-directory: Andromax-Lite-OS/launcher
@@ -67,7 +67,7 @@ jobs:
           APK="Andromax-Lite-OS/launcher/app/build/outputs/apk/app-debug.apk"
           test -s "$APK"
           "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | grep -F "package: name='org.andromaxlite.launcher'"
-          "$ANDROID_HOME/build-tools/25.0.2/aapt" dump badging "$APK" | grep -F "sdkVersion:'19'"
+          "$ANDROID_HOME/build-tools/26.0.2/aapt" dump badging "$APK" | grep -F "sdkVersion:'19'"
           stat --printf='APK bytes: %s\n' "$APK"
       - name: Upload development APK
         uses: actions/upload-artifact@v4
