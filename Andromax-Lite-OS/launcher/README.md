@@ -10,6 +10,7 @@ This is the first native Android launcher source for Andromax Lite OS.
 - D-pad navigation and center/Enter to launch.
 - Number keys 1–9 and 0 select grid entries 1–10.
 - MENU refreshes the application list.
+- Returning from another app refreshes launch targets while preserving the selected app when it still exists.
 - No AppCompat, AndroidX, support libraries, network permissions, or runtime services.
 
 ## Build
@@ -33,4 +34,4 @@ The APK was compiled successfully in GitHub Actions and its ZIP structure was ch
 
 The prototype deliberately does not modify Android framework, input configuration, boot/recovery images, camera HAL, or radio partitions.
 
-The first CI build produced a 12,706-byte APK with SHA-256 `40d5ee182e1ee6efbd1aae44045f9ac85f8c34c2905ba0cbaff7c84828e34032`. It remains untested on physical hardware.
+The first CI build produced a 12,706-byte APK with SHA-256 `40d5ee182e1ee6efbd1aae44045f9ac85f8c34c2905ba0cbaff7c84828e34032`. The launcher now refreshes on resume and restores the previously selected app where possible. The change needs a fresh CI build and remains untested on physical hardware.
