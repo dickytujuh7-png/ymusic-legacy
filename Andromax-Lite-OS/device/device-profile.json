@@ -3,12 +3,14 @@
   "vendor": "Smartfren",
   "marketing_name": "Andromax Prime",
   "firmware_archive_name": "Firmware+Andromax+Prime+F17A1H.zip",
+  "device_model": "F17A1H",
   "reported_identifiers": {
     "firmware_filename": "F17A1H",
     "system_ro_product_model": "Andromax F17A1H",
     "system_ro_product_name": "Andromax F17A1H",
     "recovery_display": "F17ALH",
-    "status": "firmware_model_confirmed_recovery_identifier_unresolved"
+    "authoritative_model": "F17A1H",
+    "status": "user_confirmed_device_model_f17a1h_recovery_display_is_secondary_unresolved_identifier"
   },
   "targets": {
     "ram_mb": 512,
@@ -19,7 +21,9 @@
     "touchscreen_dependency_allowed": false,
     "browser_name": "Andromax Web",
     "browser_baseline": "Chromium 68",
-    "camera_stability_required": true
+    "camera_stability_required": true,
+    "flashlight_required": true,
+    "flashlight_requirement": "retain_working_torch_feature_in_ROM_and_make_it_accessible_from_keypad_without_touchscreen"
   },
   "platform": {
     "android_version": "4.4.4",
