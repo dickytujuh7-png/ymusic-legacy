@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.util.LruCache;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -30,6 +31,8 @@ public final class MainActivity extends Activity {
     private GridView appGrid;
     private AppAdapter adapter;
     private final ArrayList<AppEntry> entries = new ArrayList<AppEntry>();
+    // Keep only a small number of launcher icons resident on a 512 MB device.
+    private final LruCache<String, Drawable> iconCache = new LruCache<String, Drawable>(12);
 
     @Override
     public void onCreate(Bundle state) {
@@ -109,13 +112,12 @@ public final class MainActivity extends Activity {
                 continue;
             }
             CharSequence label = info.loadLabel(pm);
-            Drawable icon = info.loadIcon(pm);
             Intent launch = new Intent(Intent.ACTION_MAIN);
             launch.addCategory(Intent.CATEGORY_LAUNCHER);
             launch.setClassName(info.activityInfo.packageName, info.activityInfo.name);
             launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             entries.add(new AppEntry(label == null ? info.activityInfo.name : label.toString(),
-                    icon, launch));
+                    info, launch));
         }
         Collections.sort(entries, new Comparator<AppEntry>() {
             @Override
@@ -127,6 +129,22 @@ public final class MainActivity extends Activity {
         if (!entries.isEmpty()) {
             appGrid.setSelection(0);
         }
+    }
+
+    private Drawable loadIcon(ResolveInfo info) {
+        String key = info.activityInfo.packageName + "/" + info.activityInfo.name;
+        Drawable icon = iconCache.get(key);
+        if (icon == null) {
+            try {
+                icon = info.loadIcon(getPackageManager());
+                if (icon != null) {
+                    iconCache.put(key, icon);
+                }
+            } catch (RuntimeException ignored) {
+                // A package can disappear while the launcher list is being refreshed.
+            }
+        }
+        return icon;
     }
 
     private void launchApplication(int position) {
@@ -198,12 +216,12 @@ public final class MainActivity extends Activity {
 
     private static final class AppEntry {
         final String label;
-        final Drawable icon;
+        final ResolveInfo resolveInfo;
         final Intent intent;
 
-        AppEntry(String label, Drawable icon, Intent intent) {
+        AppEntry(String label, ResolveInfo resolveInfo, Intent intent) {
             this.label = label;
-            this.icon = icon;
+            this.resolveInfo = resolveInfo;
             this.intent = intent;
         }
     }
@@ -240,7 +258,7 @@ public final class MainActivity extends Activity {
             tile.setBackgroundResource(R.drawable.app_tile);
             tile.setFocusable(true);
             tile.setFocusableInTouchMode(false);
-            Drawable icon = entry.icon;
+            Drawable icon = loadIcon(entry.resolveInfo);
             if (icon != null) {
                 int iconSize = dp(31);
                 icon.setBounds(0, 0, iconSize, iconSize);
